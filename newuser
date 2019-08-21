@@ -1,0 +1,67 @@
+#!/bin/bash
+# User is the given argument, or the user that executes this script.
+[[ -z "$1" ]] && user=$USER || user=$1
+
+data1="/data1/$user"
+data2="/data2/$user"
+bulk="/data1/bulk/$user/shared"
+bulkhome="/data1/bulk/$user/home"
+
+cat <<EOF >> /home/$user/.bashrc
+
+shopt -s cdable_vars
+data1=$data1
+data2=$data2
+bulk=$bulk
+bulkhome=$bulkhome
+
+alias mountbulk="sshfs -oauto_cache,reconnect,workaround=all $user@sftp.tudelft.nl:/staff-bulk/tnw/BN/SB/Shared/sb-ont_shared/ $bulk"
+alias unmountbulk="fusermount -u $bulk"
+alias autobulk="unmountbulk;mountbulk"
+alias forceautomountbulk="pkill sshfs;autobulk"
+
+alias mountbulkhome="sshfs -oauto_cache,reconnect,workaround=all $user@sftp.tudelft.nl:/staff-homes/${user:1:1}/$user $bulkhome"
+alias unmountbulkhome="fusermount -u $bulkhome"
+alias autobulkhome="unmountbulkhome;mountbulkhome"
+alias forceautomountbulkhome="pkill sshfs;autobulkhome"
+
+alias showhelp="man /home/hielke/bin/showhelp.man"
+echo
+echo "For help on this Linux cluster run \$(tput bold)showhelp\$(tput sgr0)."
+echo
+
+alias cp="cp -i"
+alias rm="rm -i"
+alias mv="mv -i"
+
+alias which="type -a"
+
+# Linux brew (package manager)
+eval \$(/data1/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+# added by Anaconda3 installer (so that it comes before linuxbrew)
+export PATH="/data1/anaconda3/bin:\$PATH"
+
+# manual installed programs
+# comming after all other programs in \$PATH
+manualinstall=(\$(find /data1/programs/ -mindepth 1 -maxdepth 1 -type d -printf '%P\n'))
+
+for program in "\${manualinstall[@]}"; do
+    export PATH="\$PATH:/data1/programs/\$program"
+done;
+
+# Perl installation for OPERA-MS maintained in hwalinga home folder
+eval \`perl -I /home/hwalinga/perl5/lib/perl5 -Mlocal::lib\`
+export MANPATH=/home/hwalinga/perl5/man:\$MANPATH
+EOF
+
+mkdir -p $data1 $data2 $bulk $bulkhome
+
+echo "The bulkhome could be wrongly guessed
+(as it is based that the first letter of the user here corresponds
+to that on the bulk drive)"
+
+echo "Following commands require sudo and or preferably run manually"
+echo "Check the executed document"
+usermod -a -G brounslab $user
+usermod -g brounslab $user

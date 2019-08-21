@@ -1,0 +1,167 @@
+.TH man 7 "13 March 2019" "1.0" "Introduction to cluster linux"
+
+.SH ABOUT THIS PAGE
+This page contains some information you will find usefull when working on this Linux cluster. This page can be shown with \fBshowhelp\fP or printed as a pdf found at \fI/home/hwalinga/bin/showhelp.pdf\fP or \fI/data1/hwalinga/bin/showhelp.pdf\fP You can quit this program with q (or :q). This will works for most terminal programs.
+.SH SMALL INTRODUCTION TO LINUX
+.SS OPERATING SYSTEM
+Linux (or GNU+Linux) is an Operating System (OS), but you are only interacting with this OS by a terminal (or commandline). The shell you are currently running is called \fBbash\fP. While \fBbash\fP is a complete programming language, you rarely use its feature. Most of the time you use external programs called from bash, but at least you know that something as \fIbash for loops\fP exists.
+.SS CALLING COMMANDS
+The first word of what you type is the external command you are calling. Either you specify the full path, or bash can automatically find it in the \fI$PATH\fP variable. Using \fIecho $PATH\fP you can find all the directories that are in the \fI$PATH\fP variable (colon (:) seperate). Using \fBwhich command\fP you can find the place \fBbash\fP found the \fBcommand\fP.
+.SS YOUR ENVIRONMENT
+The \fI$PATH\fP variable is part of your environment. The environment can be different for every user and is set up by your \fI.bashrc\fP file found in your home directory (\fI/home/username/.bashrc\fP). This file will always be loaded at start-up and changes here make the changes persistent, but specific temporary changes can always be done during a session (some tools require this).
+
+.SS ALIASES
+
+Another part of your environment are aliases. Aliases are a quick way to execute a complex command with a single word. I defined some aliases for your convenience and you can define your own in your local \fIbashrc\fP (\fI/home/username/.bashrc\fP). To find out what a alias defines you can call \fBtype -a command\fP. For your convenience I aliases \fBwhich\fP to this (\fBalias which="type -a"\fP) so that \fBwhich\fP will show both aliases and commands in the path and also show all, not just the first (as is default by which).
+
+.SS AUTOCOMPLETE
+You can autocomplete a lot of stuff with TAB. Commands, filenames, and some more stuff. Next to being usefull, it is also a good indication that what you type is correct.
+
+.SH CONNECTING TO WEBDATA/BULK
+Webdata or bulk drive can be accessed with the sftp protocol using the \fBsshfs\fP command, but I created a few aliases that will help you to access it quicker.
+
+The idea is that the bulk drive is mounted to a folder in the file system, so that all files can be accessed and moved to, just as if the bulk drive is part of the normal file system.
+
+.TP
+.B mountbulk
+Mounting the bulk drive to \fI/data1/bulk/username/shared/\fP. Some protocols are set-up so that the mounting is stable and consistent after logging out and logging in.
+
+.TP
+.B unmountbulk
+Unmount the bulk drive, because sometimes the connection has problems.
+
+.TP
+.B autobulk
+Unmount and than mounting it again.
+
+.TP
+.B forceautomountbulk
+If there are really issues, this command will stop the sshfs (with force) and tries to reconnect.
+
+The some commands exists for your home, by appending home to these commands. However you might check if these are the connected to the right path. (Assuming staff-homes and first name of your surname is the second letter of your NETID.)
+
+.SH STORE YOUR DATA
+You shouldn't store your data in your home folder (\fI/home/username/\fP), since this is a small drive. You should save your data to \fIdata1\fP or \fIdata2\fP. You all have an own folder with your name there. Showing how full the drives are can be done with \fBdf -h\fP. A nice way to visualize the data usage on a drive can be done by running \fBncdu\fP.
+.SH PERMISSIONS
+Every user is restricted in what they can do. What they can see, remove/change, and execute (resp \fIrwx\fP as can be seen with \fBls -l\fP). What permissions apply is determined by the ownership. If you own the file/folder user permissions apply, if you are part of the group, group permissions apply, if not \fIother\fP permissions apply. There is a group \fIbrounslab\fP of which all brounslab people are a member of and this helps in organizing some of these permissions (for example for the package managers).
+
+To elevate your permissions you can prepend a command with \fBsudo\fP. Off course you can also do stupid things when being the \fIsuper user\fP, so be carefull when you apply this if you have the right to do this. (\fBsudo bash\fP can give a shell with elevated permissions.)
+.SH CHANGES TO YOUR ENVIRONMENT
+
+Next to the already mentioned aliases for the bulk drive, other aliases I included to your environement are \fIinteractive\fP file operations (rm, mv, cp). These will prompt if they need to remove something (rm will always prompt). To not make them prompt you can disable the alias by prepending it with "\". (For rm and mv you can also pass the force flag ("-f"), like so: \fBrm -f file\fP.
+
+Lastly, there are some variables that are assingmed to some usefull paths. These are \fIdata1\fP and \fIdata2\fP for your personal folder there is \fIbulk\fP for your bulk folder. You can use them by prepending them with "$", but cd does not require this.
+
+.SH INSTALLING NEW SOFTWARE (PACKAGE MANAGERS)
+There are three package managers on the system. (NB. The name of the package does not always reflect the name of the command.) If you can install with a package manager it is often more easier and keep the dependencies more cleaner. An option for installing with a package manager is not always listed on a software's website, so you can just try.
+
+.TP
+.B apt
+This is the OS package manager. Fast and reliable, but limited amount of niche packages. You can search with \fBapt search\fP and list all packages with \fBdpkg -l\fP. For installation you need sudo rights, like so: \fBsudo apt install packagename\fP.
+
+.TP
+.B conda
+Part of the Anaconda distribution, this is a python based package manager, but it can also install all kinds of other sorts of programs. It also tries to "solve dependencies", but it is often very slow (like really slow). List already installed packages with \fBconda list\fP. Searching works with \fBconda search\fP, but you often have to include a channel for this. Most likely you need \fBconda search -c bioconda\fP. (Often you are better off with an online search since you don't know the channel.) When installing the channel also needs to be provided. If an installation fails because it cannot find the dependency, try to install this on seperately. The Anaconda distribution also maintains the Perl installation (\fBwhich perl\fP), and therefore you can install perl packages with conda as well.
+
+.TP
+.B brew
+Originally a MacOS package manager, but also works on Linux. Package manager based on git and self-compilation, but can also provide pre-compiled packages. Maintains all dependencies by itself. Self-compilation can be very slow, especially with a lot of dependencies, but often quite fast, especially with pre-compiled packages. List with \fBbrew list\fP and search \fBbrew search\fP and install with \fBbrew install\fP. Channels (or "taps") \fIbrewsci/science\fP and \fIbrewsci/bio\fP are already included.
+
+.SS MANUAL INSTALLED
+There are a few programs manually installed. They are located in \fI/data1/programs/\fP and also added to the path. You can just list them with \fBls /data1/progams\fP. You can also add more programs by creating a new folder and install that there. NB. Only the first level is added to the path. So, if you create \fI/data1/programs/newpgrogram/executable\fP. Only \fI/data1/programs/newprogram\fP is added to the path, and not \fIexecutable\fP. An exception is made for a bin folder.
+
+To install from source just go to \fI/data1/programs/\fP (\fBcd /data1/programs/\fP) and copy your program to a folder in here. (It really has to be in its own folder.) You can easily download directly from the cluster with \fBwget http://linktopage.com\fP. For a git repo, you should use \fBgit clone https://github.com/username/packagename\fP. This will then make the directory for it by itself.
+
+If you compile from source the only thing you usually have to do it run \fBmake\fP from within the directory. This only applies if there is \fIMakefile\fP in there. If there isn't you sometimes need to run \fB./configure\fP before running \fBmake\fP. Usually just follow the installation instructions on the github page.
+
+The binary you end up with in the end has to have the executable permission set. If it hasn't you have to set it yourself with \fBchmod +x binary\fP. Also see "permissions" later in this document.
+
+.SS DEPENDENCY MESS
+Since everybody (in the brounslab group) can install with the same package managers, and there are two major Python version (Python2 and Python3) with already different installations on the cluster, you can quickly end up in a dependency mess. Conda can deal with most issues, but if you are having trouble take a look at conda environments, or install with a different package manager (like pip). Creating an empty environment can also deal with slow installation of conda packages.
+
+Also, it is good to be aware that currently conda packages come before brew packages in the \fI$PATH\fP variable, since Python and Perl can both be installed by brew and conda. On top of this, each programming langeage also has its own package manager.
+
+Python has pip, and pip3. pip3 is always Python3, but pip can be either Python2 or Python3 (check with \fBpip --version\fP). Preffered is still conda, since mixing pip and conda too much can lead to problems. If conda does not work, you can try to install with pip.
+
+Perl has multiple ones, but currently using cpanminus (\fBcpanm\fP). Initilization happens with \fBcpanm --local-lib=/somefolder/perl5 local::lib\fP. This has already been done and \fIsomefolder\fP is \fI/home/hwalinga\fP.) This also requires the line \fBeval $(perl -I /home/hwalinga/perl5/lib/perl5/ -Mlocal::lib)\fP in your \fI.bashrc\fP, but that is also already done.
+
+.SS WHAT TO USE
+
+I recommend using conda for perl packages, since I think cpanm can have problems.
+
+If you don't know what you are doing I also recommend conda over all other package managers.
+
+If a package has no Python code in it, I think brew is a better alternative if you can find it in there. Compiling it yourself is also a good alternative if it has no Python code in it.
+
+If a package has only Python code in it, you can also get away with it by installing with pip, but only if you are sure this package will never be a dependency to another program, but is really a package on its own. Otherwise dependency mess could happen.
+
+.SH RUNNING LONG JOBS
+If you have a long job, you don't want to keep your computer running while it is finishing. Therefor you have to seperate such a job from your login session. You can do this with \fBscreen\fP. Make a new \fBscreen\fP session with \fBscreen -S sessionname\fP, start your job and \fIreattach\fP the session with CTRL+A+D. You can reattach to your old session with \fBscreen -r sessionname\fP. With TAB this will autocomplete.
+
+For long jobs it is sometimes a good idea to make the jobs \fInice\fP. This means that they will take less CPU as normally. You can do this by prepending the command it with \fBnice\fP, or, when the job is already running open \fBhtop\fP, find your process and make it nice with \fIf8\fP. Here you can also kill a process with \fIF9\fP. (If the process runs in an interactive session, you can kill it with Ctrl-C.)
+.SH GETTING HELP
+There are a few ways to get help locally:
+.TP
+.B tldr
+With \fBtldr command\fP you can get small and quick help with examples.
+.TP
+.B man
+With \fBman command\fP you get extensive help.
+.TP
+.B info
+With \fBinfo command\fP you get even more extensive help (not worth it).
+.TP
+.B /usr/local/doc
+In the folder \fI/usr/local/doc\fP you can find even more documentation. (Also not worth it.)
+
+.RE
+There are also various websites you can ask questions, or find answers:
+
+.IP \[bu] 2
+biostars.org
+.IP \[bu]
+reddit.com/r/linuxquestions
+.IP \[bu]
+reddit.com/r/bash
+.IP \[bu]
+bioinformatics.stackexchange.com
+.IP \[bu]
+unix.stackexchange.com
+.IP \[bu]
+askubuntu.com
+.IP \[bu]
+superuser.com
+.IP \[bu]
+serverfault.com
+.IP \[bu]
+stackoverflow.com
+
+.RE
+All websites try to answer a specific niche of question so try the one you think can work best. The people on the websites of the bottom of the list can sometimes be a little mean, but trying can never hurt.
+
+.SH ADDING NEW USERS
+There is simple script that adds a new user to the \fBbrounslab\fP group and also appends the important lines to his/her .bashrc. Script is in \fI/home/hwalinga/bin/newuser\fP or \fI/data1/hwalinga/bin/newuser\fP. This can be run with \fBbash newuser username\fP (already done for existing users).
+.SH TROUBLESHOOTING
+When dealing with errors, try to see if you understand the error message before trying some random stuff. This section will probably expand over the months when I am still here.
+.SS PYTHON2 VS PYTHON3
+When calling a particular python program, be explicit with the Python version (2 vs 3). Use python2 or python3 explicitly. This can also be changed for the first line of the script if such a script uses that (\fB#!/usr/bin/env python\fP). If this is not possible you can temporarily create a virtual environment by prepending a self-made folder to the $PATH variable (last resort). Or use conda environments (some thing). Like so:
+.EX
+mkdir /home/user/myenv/
+ln -s /specific/python /home/user/meyenv
+export PATH="/home/user/myenv:$PATH"
+.EE
+Indication of wrong Python version are 'print "string"' vs print("string"), or bytes vs string object.
+.SS UNABLE TO FIND "PROGAM"
+The tool has a dependency ("program") that it cannot find (probably because it is not installed). Check this by running \fBwhich program\fP (just to be sure). If you cannot find it, \fBlocate program\fP might show you its location, so that you can add it to the \fI$PATH\fP. (NB. locate depends on a database, if you can run \fBsudo updatedb\fP beforehand to make sure this is up to date.)
+.SS MODULE HAS NO ATTRIBUTE / CANNOT IMPORT MODULE
+For Python  this former indicates that the module is installed, but does not contain a certain submodule. The latter just indicates the module does not exist. For both problems, try to reinstall the module with conda, if this does not work try to install with pip, or create a conda virtual environment. (NB. Other programs might word this differently, perl will mention something about @INC.)
+.SS CANNOT FIND FILE
+The tool program requires a certain file has input, but it cannot find it there. You might have mistyped the location. Using <TAB> can make sure you never make typos.
+.SH MORE USEFULL STUFF
+If you have an image in the server, the best way to view it is to copy it to the bulk drive and view it on your local computer. To get a \fIrough\fP idea of the image, you can use \fBimgcat image.png\fP. (There are some options that might improve it, like -R or -H.)
+
+If you want to have a progress bar if you copy comething. You can make use of \fBpycp\fP instead of \fBcp\fP.
+
+If you want to quickly edit or create a file on the cluster you can make use of nano. Write out means safe.
+.SH AUTHOR
+Hielke Walinga (h.walinga@student.tudelft.nl)

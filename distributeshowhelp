@@ -1,0 +1,2 @@
+man -Tpdf /home/hwalinga/bin/showhelp.man > /home/hwalinga/bin/showhelp.pdf
+cp /home/hwalinga/bin/showhelp.{man,pdf} /data1/hwalinga/bin/
