@@ -174,14 +174,33 @@ The tool has a dependency ("program") that it cannot find (probably because it i
 For Python the former indicates that the module is installed, but does not contain a certain submodule (probably becaue the module is out of date). The latter just indicates the module does not exist. For both problems, try to reinstall the module with conda, if this does not work try to install with pip, or create a conda virtual environment. (NB. Other programs might word this differently, perl will mention something about @INC.)
 .SS CANNOT FIND FILE
 The tool program requires a certain file has input, but it cannot find it there. You might have mistyped the location. Using <TAB> can make sure you never make typos.
+
 .SH MORE USEFUL STUFF
-If you have an image in the server, the best way to view it is to copy it to the bulk drive and view it on your local computer. To get a \fIrough\fP idea of the image, you can use \fBimgcat image.png\fP. (There are some options that might improve it, like -R or -H.)
+.SS OPENING FILES
+Instead of copying files to your local computer to open them, it is off course more convenient to view them without this hassle. To do this you can view them within you command line, with command line utilties, or graphical with the so called X Server.
 
-If you really want more fancy ways to view stuff directly you need to install an
-X Server on your PC. This is the default if your OS is Linux. On a Mac you will need XQuartz (https://www.xquartz.org/), on a Windows machine MobaXterm promises this functionality out of the box.
+\fBxdg-open\fP is a program than can open any file with one of the default applications.
 
-If you want to have a progress bar if you copy something. You can make use of \fBpycp\fP instead of \fBcp\fP.
+.TP
+.B Command line utilities
+If you want to take a look at a big file (log or results file), you can make use of pager like \fBless\fP. (q to quit)
 
 If you want to quickly edit or create a file on the cluster you can make use of \fBnano\fP. Write out means safe.
+
+To get a \fIrough\fP idea of the image, you can use \fBimgcat image.png\fP. (There are some options that might improve it, like -R or -H.)
+
+.TP
+.B X Server
+X Server is by default installed if your OS is Linux. On a Mac you will need XQuartz (https://www.xquartz.org/), on a Windows machine MobaXterm promises this functionality out of the box, but need to be installed for other SSH clients, like Putty.
+
+You can now open images/pdf/html from inside the linux cluster.
+
+Opening images can now be done with something like eog. Additionally, you can use a file explorer with image preview (my preferred method). You can start with xterm ranger. (xterm is the terminal emulator ranger will start.)
+
+.SS COPYING BIG FILES
+If you want to have a progress bar if you copy something. You can make use of \fBpycp\fP instead of \fBcp\fP.
+
+If you want to be able to restart an interupted copying progress take a look at \fBrsync\fP.
+
 .SH AUTHOR
 Hielke Walinga (h.walinga@student.tudelft.nl)
