@@ -1,21 +1,21 @@
 .TH man 7 "13 March 2019" "1.0" "Introduction to cluster linux"
 
 .SH ABOUT THIS PAGE
-This page contains some information you will find usefull when working on this Linux cluster. This page can be shown with \fBshowhelp\fP or printed as a pdf found at \fI/home/hwalinga/bin/showhelp.pdf\fP or \fI/data1/hwalinga/bin/showhelp.pdf\fP You can quit this program with q (or :q). This will works for most terminal programs.
+This page contains some information you will find useful when working on this Linux cluster. This page can be shown with \fBshowhelp\fP or printed as a pdf found at \fI/home/hwalinga/bin/showhelp.pdf\fP or \fI/data1/hwalinga/bin/showhelp.pdf\fP. If you view this on the command line with \fBshowhelp\fP, you can quit this program with q (or :q). This will works for most terminal programs, by the way.
 .SH SMALL INTRODUCTION TO LINUX
 .SS OPERATING SYSTEM
-Linux (or GNU+Linux) is an Operating System (OS), but you are only interacting with this OS by a terminal (or commandline). The shell you are currently running is called \fBbash\fP. While \fBbash\fP is a complete programming language, you rarely use its feature. Most of the time you use external programs called from bash, but at least you know that something as \fIbash for loops\fP exists.
+Linux (or GNU+Linux) is an Operating System (OS), but you are currently only interacting with this OS by a terminal (or command line). The shell you are currently running is called \fBbash\fP (most popular by far). While \fBbash\fP is a complete programming language, you rarely use most of its language features. Most of the time you use external programs called from bash, but at least you know that something as \fIbash for loops\fP exists.
 .SS CALLING COMMANDS
-The first word of what you type is the external command you are calling. Either you specify the full path, or bash can automatically find it in the \fI$PATH\fP variable. Using \fIecho $PATH\fP you can find all the directories that are in the \fI$PATH\fP variable (colon (:) seperate). Using \fBwhich command\fP you can find the place \fBbash\fP found the \fBcommand\fP.
+The first word of what you type is the external command you are calling. Either you specify the full path, or bash can automatically find it in the \fI$PATH\fP variable. Using \fIecho $PATH\fP you can find all the directories that are in the \fI$PATH\fP variable (colon (:) separate). Using \fBwhich command\fP you can find the place \fBbash\fP found the \fBcommand\fP.
 .SS YOUR ENVIRONMENT
 The \fI$PATH\fP variable is part of your environment. The environment can be different for every user and is set up by your \fI.bashrc\fP file found in your home directory (\fI/home/username/.bashrc\fP). This file will always be loaded at start-up and changes here make the changes persistent, but specific temporary changes can always be done during a session (some tools require this).
 
 .SS ALIASES
 
-Another part of your environment are aliases. Aliases are a quick way to execute a complex command with a single word. I defined some aliases for your convenience and you can define your own in your local \fIbashrc\fP (\fI/home/username/.bashrc\fP). To find out what a alias defines you can call \fBtype -a command\fP. For your convenience I aliases \fBwhich\fP to this (\fBalias which="type -a"\fP) so that \fBwhich\fP will show both aliases and commands in the path and also show all, not just the first (as is default by which).
+Another part of your environment are aliases. Aliases are a quick way to execute a complex command with a single word. I defined some aliases for your convenience and you can define your own in your local \fIbashrc\fP (\fI/home/username/.bashrc\fP). To find out what an alias defines you can call \fBtype -a command\fP. For your convenience I aliased \fBwhich\fP to this (\fBalias which="type -a"\fP) so that \fBwhich\fP will show both aliases and commands in the path and also show all, not just the first (as is default by which).
 
 .SS AUTOCOMPLETE
-You can autocomplete a lot of stuff with TAB. Commands, filenames, and some more stuff. Next to being usefull, it is also a good indication that what you type is correct.
+You can autocomplete a lot of stuff with TAB. Commands, filenames, and some more stuff. Next to being useful, it is also a good indication that what you type is correct.
 
 .SH CONNECTING TO WEBDATA/BULK
 Webdata or bulk drive can be accessed with the sftp protocol using the \fBsshfs\fP command, but I created a few aliases that will help you to access it quicker.
@@ -38,19 +38,26 @@ Unmount and than mounting it again.
 .B forceautomountbulk
 If there are really issues, this command will stop the sshfs (with force) and tries to reconnect.
 
-The some commands exists for your home, by appending home to these commands. However you might check if these are the connected to the right path. (Assuming staff-homes and first name of your surname is the second letter of your NETID.)
+The same commands exists for your home, by appending home to these commands. However you might check if these are the connected to the right path. (Assuming staff-homes and first name of your surname is the second letter of your NETID.)
+
+Despite that a connection to the bulk should persist, in practise this rarely works. Allthough this problem has been reported, IT thinks it can be solved, but it is too time consuming.
+Therefor every time you interact with the bulk drive it means and
+you haven't used the bulk drive in a while you run \fBautobulk\fP and provide
+your password again.
 
 .SH STORE YOUR DATA
 You shouldn't store your data in your home folder (\fI/home/username/\fP), since this is a small drive. You should save your data to \fIdata1\fP or \fIdata2\fP. You all have an own folder with your name there. Showing how full the drives are can be done with \fBdf -h\fP. A nice way to visualize the data usage on a drive can be done by running \fBncdu\fP.
+(Another recently added hard drive is \fIdata_nfs\fP which serves as a stable bridge between sb-ont and basecalling-ont. You can also use this drive for saving stuff, it is only a bit slower.)
+
 .SH PERMISSIONS
 Every user is restricted in what they can do. What they can see, remove/change, and execute (resp \fIrwx\fP as can be seen with \fBls -l\fP). What permissions apply is determined by the ownership. If you own the file/folder user permissions apply, if you are part of the group, group permissions apply, if not \fIother\fP permissions apply. There is a group \fIbrounslab\fP of which all brounslab people are a member of and this helps in organizing some of these permissions (for example for the package managers).
 
 To elevate your permissions you can prepend a command with \fBsudo\fP. Off course you can also do stupid things when being the \fIsuper user\fP, so be carefull when you apply this if you have the right to do this. (\fBsudo bash\fP can give a shell with elevated permissions.)
 .SH CHANGES TO YOUR ENVIRONMENT
 
-Next to the already mentioned aliases for the bulk drive, other aliases I included to your environement are \fIinteractive\fP file operations (rm, mv, cp). These will prompt if they need to remove something (rm will always prompt). To not make them prompt you can disable the alias by prepending it with "\". (For rm and mv you can also pass the force flag ("-f"), like so: \fBrm -f file\fP.
+Next to the already mentioned aliases for the bulk drive, other aliases I included to your environment are \fIinteractive\fP file operations (rm, mv, cp). These will prompt if they need to remove something (rm will always prompt). To not make them prompt you can disable the alias by prepending it with "\". (For rm and mv you can also pass the force flag ("-f"), like so: \fBrm -f file\fP.
 
-Lastly, there are some variables that are assingmed to some usefull paths. These are \fIdata1\fP and \fIdata2\fP for your personal folder there is \fIbulk\fP for your bulk folder. You can use them by prepending them with "$", but cd does not require this.
+Lastly, there are some variables that are assingmed to some useful paths. These are \fIdata1\fP and \fIdata2\fP for your personal folder there is \fIbulk\fP for your bulk folder. You can use them by prepending them with "$", but cd does not require this.
 
 .SH INSTALLING NEW SOFTWARE (PACKAGE MANAGERS)
 There are three package managers on the system. (NB. The name of the package does not always reflect the name of the command.) If you can install with a package manager it is often more easier and keep the dependencies more cleaner. An option for installing with a package manager is not always listed on a software's website, so you can just try.
@@ -74,6 +81,15 @@ To install from source just go to \fI/data1/programs/\fP (\fBcd /data1/programs/
 
 If you compile from source the only thing you usually have to do it run \fBmake\fP from within the directory. This only applies if there is \fIMakefile\fP in there. If there isn't you sometimes need to run \fB./configure\fP before running \fBmake\fP. Usually just follow the installation instructions on the github page.
 
+Sometimes compilation fails because conda has messed up some environment configurations. You can get a clean environment with the following command:
+.EX
+env -i bash --norc --noprofile
+.EE
+Usually it will still help to initialize brew again:
+.EX
+eval $(/data1/linuxbrew/.linuxbrew/bin/brew shellenv)
+.EE
+
 The binary you end up with in the end has to have the executable permission set. If it hasn't you have to set it yourself with \fBchmod +x binary\fP. Also see "permissions" later in this document.
 
 .SS DEPENDENCY MESS
@@ -91,14 +107,14 @@ I recommend using conda for perl packages, since I think cpanm can have problems
 
 If you don't know what you are doing I also recommend conda over all other package managers.
 
-If a package has no Python code in it, I think brew is a better alternative if you can find it in there. Compiling it yourself is also a good alternative if it has no Python code in it.
+If a package has no Python code in it, I think brew is a better alternative if you can find it in there. (In practice very often the case.) Compiling it yourself is also a good alternative if it has no Python code in it.
 
-If a package has only Python code in it, you can also get away with it by installing with pip, but only if you are sure this package will never be a dependency to another program, but is really a package on its own. Otherwise dependency mess could happen.
+If a package has only Python code in it, you can also get away by installing with pip, but only if you are sure this package will never be a dependency to another program, but it really is a package on its own. Otherwise dependency mess could happen.
 
 .SH RUNNING LONG JOBS
-If you have a long job, you don't want to keep your computer running while it is finishing. Therefor you have to seperate such a job from your login session. You can do this with \fBscreen\fP. Make a new \fBscreen\fP session with \fBscreen -S sessionname\fP, start your job and \fIreattach\fP the session with CTRL+A+D. You can reattach to your old session with \fBscreen -r sessionname\fP. With TAB this will autocomplete.
+If you have a long job, you don't want to keep your computer running while it is finishing. Therefore you have to separate such a job from your login session. You can do this with \fBscreen\fP. Make a new \fBscreen\fP session with \fBscreen -S sessionname\fP, start your job and \fIreattach\fP the session with CTRL+A+D. You can reattach to your old session with \fBscreen -r sessionname\fP. With TAB this will autocomplete.
 
-For long jobs it is sometimes a good idea to make the jobs \fInice\fP. This means that they will take less CPU as normally. You can do this by prepending the command it with \fBnice\fP, or, when the job is already running open \fBhtop\fP, find your process and make it nice with \fIf8\fP. Here you can also kill a process with \fIF9\fP. (If the process runs in an interactive session, you can kill it with Ctrl-C.)
+For long jobs it is sometimes a good idea to make the jobs \fInice\fP. This means that they will take less CPU as normally. You can do this by prepending the command it with \fBnice\fP, or, when the job is already running open \fBhtop\fP, find your process and make it \fBnice\fP with \fIf8\fP. Here you can also kill a process with \fIF9\fP. (If the process runs in an interactive session, you can kill it with Ctrl-C.)
 .SH GETTING HELP
 There are a few ways to get help locally:
 .TP
@@ -152,16 +168,20 @@ export PATH="/home/user/myenv:$PATH"
 .EE
 Indication of wrong Python version are 'print "string"' vs print("string"), or bytes vs string object.
 .SS UNABLE TO FIND "PROGAM"
-The tool has a dependency ("program") that it cannot find (probably because it is not installed). Check this by running \fBwhich program\fP (just to be sure). If you cannot find it, \fBlocate program\fP might show you its location, so that you can add it to the \fI$PATH\fP. (NB. locate depends on a database, if you can run \fBsudo updatedb\fP beforehand to make sure this is up to date.)
+The tool has a dependency ("program") that it cannot find (probably because it is not installed). Check this by running \fBwhich program\fP (just to be sure). If you cannot find it, \fBlocate program\fP might show you its location, so that you can add it to the \fI$PATH\fP. (NB. \fBlocate\fP depends on a database, if you can run \fBsudo updatedb\fP beforehand to make sure this is up to date.)
+
 .SS MODULE HAS NO ATTRIBUTE / CANNOT IMPORT MODULE
-For Python  this former indicates that the module is installed, but does not contain a certain submodule. The latter just indicates the module does not exist. For both problems, try to reinstall the module with conda, if this does not work try to install with pip, or create a conda virtual environment. (NB. Other programs might word this differently, perl will mention something about @INC.)
+For Python the former indicates that the module is installed, but does not contain a certain submodule (probably becaue the module is out of date). The latter just indicates the module does not exist. For both problems, try to reinstall the module with conda, if this does not work try to install with pip, or create a conda virtual environment. (NB. Other programs might word this differently, perl will mention something about @INC.)
 .SS CANNOT FIND FILE
 The tool program requires a certain file has input, but it cannot find it there. You might have mistyped the location. Using <TAB> can make sure you never make typos.
-.SH MORE USEFULL STUFF
+.SH MORE USEFUL STUFF
 If you have an image in the server, the best way to view it is to copy it to the bulk drive and view it on your local computer. To get a \fIrough\fP idea of the image, you can use \fBimgcat image.png\fP. (There are some options that might improve it, like -R or -H.)
 
-If you want to have a progress bar if you copy comething. You can make use of \fBpycp\fP instead of \fBcp\fP.
+If you really want more fancy ways to view stuff directly you need to install an
+X Server on your PC. This is the default if your OS is Linux. On a Mac you will need XQuartz (https://www.xquartz.org/), on a Windows machine MobaXterm promises this functionality out of the box.
 
-If you want to quickly edit or create a file on the cluster you can make use of nano. Write out means safe.
+If you want to have a progress bar if you copy something. You can make use of \fBpycp\fP instead of \fBcp\fP.
+
+If you want to quickly edit or create a file on the cluster you can make use of \fBnano\fP. Write out means safe.
 .SH AUTHOR
 Hielke Walinga (h.walinga@student.tudelft.nl)
