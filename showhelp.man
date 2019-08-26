@@ -191,11 +191,11 @@ To get a \fIrough\fP idea of the image, you can use \fBimgcat image.png\fP. (The
 
 .TP
 .B X Server
-X Server is by default installed if your OS is Linux. On a Mac you will need XQuartz (https://www.xquartz.org/), on a Windows machine MobaXterm promises this functionality out of the box, but need to be installed for other SSH clients, like Putty.
+X Server is by default installed if your OS is Linux. On a Mac you will need XQuartz (https://www.xquartz.org/), on a Windows machine MobaXterm has this functionality out of the box, but need to be installed for other SSH clients, like Putty.
 
 You can now open images/pdf/html from inside the linux cluster.
 
-Opening images can now be done with something like eog. Additionally, you can use a file explorer with image preview (my preferred method). You can start with xterm ranger. (xterm is the terminal emulator ranger will start.)
+Opening images can now be done with something like \fBeog\fP, or \fBristretto\fP, and pdf's with zathura. Additionally, you can use a file explorer with image preview (my preferred method). You can start with xterm ranger. (xterm is the terminal emulator ranger will start.)
 
 .SS COPYING BIG FILES
 If you want to have a progress bar if you copy something. You can make use of \fBpycp\fP instead of \fBcp\fP.
