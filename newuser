@@ -53,6 +53,12 @@ done;
 # Perl installation for OPERA-MS maintained in hwalinga home folder
 eval \`perl -I /home/hwalinga/perl5/lib/perl5 -Mlocal::lib\`
 export MANPATH=/home/hwalinga/perl5/man:\$MANPATH
+
+alias showfigs="eog figs*/*"
+alias movecontigs="mkdir -p \"\$(zenity --file-selection --directory --filename=\"$bulk\")/\$(zenity --entry --text 'Name of new directory')\" && parallel --rpl '{m} s:.*/(?=.*/)::;s:/.*::;' cp {} \"\$_/{m}.fa\" ::: spades*/*/contigs.fasta medaka/*/consensus.fasta"
+alias movedir="cp -r \"\$PWD\" \"\$(zenity --file-selection --directory --filename=\"$bulk\")\""
+alias showquality="zathura \"\$(zenity --file-selection --filename='./pdf/*')\""
+
 EOF
 
 mkdir -p $data1 $data2 $bulk $bulkhome

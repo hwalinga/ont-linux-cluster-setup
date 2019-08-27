@@ -59,6 +59,26 @@ Next to the already mentioned aliases for the bulk drive, other aliases I includ
 
 Lastly, there are some variables that are assingmed to some useful paths. These are \fIdata1\fP and \fIdata2\fP for your personal folder there is \fIbulk\fP for your bulk folder. You can use them by prepending them with "$", but cd does not require this.
 
+.SH ALIASES FOR ASSEMBLY / BULK DRIVE INTERACTION
+
+Here I list some aliases I made that can help you with interacting with the data coming from the assembly, and how to place the files back to the bulk drive (interactively).
+
+.TP
+.B showfigs
+This will open eog to show the coverage plots.
+
+.TP
+.B showquality
+This will prompt for a pdf file to read that contains the quality output.
+
+.TP
+.B movecontigs
+From the assembly folder move the contigs to a folder you are prompted for.
+
+.TP
+.B movedir
+Move the whole directory you are currently locating in to another directory.
+
 .SH INSTALLING NEW SOFTWARE (PACKAGE MANAGERS)
 There are three package managers on the system. (NB. The name of the package does not always reflect the name of the command.) If you can install with a package manager it is often more easier and keep the dependencies more cleaner. An option for installing with a package manager is not always listed on a software's website, so you can just try.
 
@@ -167,7 +187,7 @@ ln -s /specific/python /home/user/meyenv
 export PATH="/home/user/myenv:$PATH"
 .EE
 Indication of wrong Python version are 'print "string"' vs print("string"), or bytes vs string object.
-.SS UNABLE TO FIND "PROGAM"
+.SS UNABLE TO FIND "PROGRAM"
 The tool has a dependency ("program") that it cannot find (probably because it is not installed). Check this by running \fBwhich program\fP (just to be sure). If you cannot find it, \fBlocate program\fP might show you its location, so that you can add it to the \fI$PATH\fP. (NB. \fBlocate\fP depends on a database, if you can run \fBsudo updatedb\fP beforehand to make sure this is up to date.)
 
 .SS MODULE HAS NO ATTRIBUTE / CANNOT IMPORT MODULE
@@ -177,7 +197,7 @@ The tool program requires a certain file has input, but it cannot find it there.
 
 .SH MORE USEFUL STUFF
 .SS OPENING FILES
-Instead of copying files to your local computer to open them, it is off course more convenient to view them without this hassle. To do this you can view them within you command line, with command line utilties, or graphical with the so called X Server.
+Instead of copying files to your local computer to open them, it is off course more convenient to view them without this hassle. To do this you can view them within you command line, with command line utilties, or graphical with the so called X11 Server.
 
 \fBxdg-open\fP is a program than can open any file with one of the default applications.
 
@@ -190,8 +210,8 @@ If you want to quickly edit or create a file on the cluster you can make use of 
 To get a \fIrough\fP idea of the image, you can use \fBimgcat image.png\fP. (There are some options that might improve it, like -R or -H.)
 
 .TP
-.B X Server
-X Server is by default installed if your OS is Linux. On a Mac you will need XQuartz (https://www.xquartz.org/), on a Windows machine MobaXterm has this functionality out of the box, but need to be installed for other SSH clients, like Putty.
+.B X11 Server
+X11 Server is by default installed if your OS is Linux. On a Mac you will need XQuartz (https://www.xquartz.org/), on a Windows machine MobaXterm has this functionality out of the box, but need to be installed for other SSH clients, like Putty.
 
 You can now open images/pdf/html from inside the linux cluster.
 
